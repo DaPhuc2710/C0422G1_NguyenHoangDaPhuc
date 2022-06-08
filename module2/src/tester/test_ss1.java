@@ -2,9 +2,15 @@ package tester;
 
 public class test_ss1 {
     public static void main(String[] args) {
-        float f1 = 35e3f;
-        double d1 = 12E4d;
-        System.out.println(f1);
-        System.out.println(d1);
+        int i = 0;
+        while (i < 10) {
+            if (i == 4) {
+                i++;
+                continue;
+            }
+            System.out.println(i);
+            i++;
+        }
+
     }
 }
