@@ -12,8 +12,9 @@ public class Fan {
     private String color = "blue";
 
 
-    public Fan(){
+    public Fan() {
     }
+
     public int getSLOW() {
         return SLOW;
     }
@@ -57,20 +58,22 @@ public class Fan {
     public void setColor(String color) {
         this.color = color;
     }
-    public String toString (){
-        if (isOn()){
-            System.out.println("The speed is"+getSpeed()+"\n"+"The color is"+getColor()+"The radius is"+getRadius()+"the fan is on");
-        }else {
-            System.out.println("The speed is"+getSpeed()+"\n"+"The color is"+getColor()+"The radius is"+getRadius()+"the fan is off");
+
+    public String toString() {
+        if (isOn()) {
+            return "The speed is" + getSpeed() + "\n" + "The color is" + getColor() + "The radius is" + getRadius() + "the fan is on";
+        } else {
+            return "The speed is" + getSpeed() + "\n" + "The color is" + getColor() + "The radius is" + getRadius() + "the fan is off";
         }
     }
+
     public static void main(String[] args) {
-        Fan fan1 = new Fan ();
+        Fan fan1 = new Fan();
         fan1.setSpeed(3);
         fan1.setRadius(10);
         fan1.setColor("yellow");
         fan1.setOn(true);
-        Fan fan2 = new Fan ();
+        Fan fan2 = new Fan();
         fan2.setSpeed(2);
         fan2.setRadius(5);
         fan2.setColor("blue");
