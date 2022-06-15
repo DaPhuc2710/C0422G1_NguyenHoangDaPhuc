@@ -1,4 +1,4 @@
-package tester;
+package tester.ss3;
 
 public class Tester {
     int x=5;

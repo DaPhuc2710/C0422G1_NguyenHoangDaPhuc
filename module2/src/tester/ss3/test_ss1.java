@@ -1,4 +1,4 @@
-package tester;
+package tester.ss3;
 
 import java.util.Scanner;
 
