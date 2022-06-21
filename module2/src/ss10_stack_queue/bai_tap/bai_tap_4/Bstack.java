@@ -6,7 +6,7 @@ import java.util.Stack;
 public class Bstack {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhap bieu thuc");
+        System.out.println("Nhập biểu thức");
         String string = scanner.nextLine();
         Stack<Character> stack = new Stack<>();
         boolean flag = true;
