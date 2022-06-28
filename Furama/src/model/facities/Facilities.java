@@ -1,4 +1,4 @@
-package model;
+package model.facities;
 
 public abstract class Facilities {
     private String name;
@@ -55,5 +55,16 @@ public abstract class Facilities {
 
     public void setTypes(String types) {
         this.types = types;
+    }
+
+    @Override
+    public String toString() {
+        return "Facilities{" +
+                "name='" + name + '\'' +
+                ", area=" + area +
+                ", price=" + price +
+                ", maxPeople=" + maxPeople +
+                ", types='" + types + '\'' +
+                '}';
     }
 }

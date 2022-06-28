@@ -1,9 +1,8 @@
 package services;
 
-public interface IServices {
+public interface IServicesPer {
     void display();
     void add();
     void edit();
-    void exitToMenu();
-
 }
+

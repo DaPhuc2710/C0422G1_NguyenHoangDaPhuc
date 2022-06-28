@@ -1,2 +1,4 @@
-package model.person;public class Contract {
+package model.person;
+
+public class Contract {
 }

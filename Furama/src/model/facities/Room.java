@@ -1,4 +1,6 @@
-package model;
+package model.facities;
+
+import model.facities.Facilities;
 
 public class Room extends Facilities {
     private String freeServices;
@@ -21,5 +23,12 @@ public class Room extends Facilities {
 
     public void setFreeServices(String freeServices) {
         this.freeServices = freeServices;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "freeServices='" + freeServices + '\'' +
+                '}';
     }
 }

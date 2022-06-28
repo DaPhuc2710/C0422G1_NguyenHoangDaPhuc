@@ -1,4 +1,4 @@
 package services;
 
-public interface EmployeeServices extends IServicesPer {
+public interface IEmployeeServices extends IServicesPer {
 }

@@ -1,2 +1,4 @@
-package services;public interface ContactServices {
+package services;
+
+public interface ContactServices  extends IServicesPer{
 }

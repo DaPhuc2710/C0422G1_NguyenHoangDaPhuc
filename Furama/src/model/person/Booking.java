@@ -1,2 +1,5 @@
-package model.person;public class Booking {
-}
+package model.person;
+
+//public class Booking {
+//    private
+//}

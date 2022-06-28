@@ -1,4 +1,6 @@
-package model;
+package model.facities;
+
+import model.facities.Facilities;
 
 public class House extends Facilities {
     private String roomQuality;
@@ -32,5 +34,13 @@ public class House extends Facilities {
 
     public void setFloor(int floor) {
         this.floor = floor;
+    }
+
+    @Override
+    public String toString() {
+        return "House{" +
+                "roomQuality='" + roomQuality + '\'' +
+                ", floor=" + floor +
+                '}';
     }
 }
