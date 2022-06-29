@@ -7,12 +7,19 @@ public class TelephoneChecker {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        String num;
+        System.out.println("Mời nhập sđt");
         do {
-            System.out.println("Mời nhập sđt");
-            num = scanner.nextLine();
-        } while (!num.matches(TELE_NUM));
-        System.out.println("Đúng rồi");
+            String phone = scanner.nextLine();
+            if (check(phone)) {
+                System.out.println("Đúng rồi");
+                break;
+            }
+            System.out.println("Mời nhập lại");
+        } while (true);
     }
 
+
+    public static Boolean check(String num) {
+        return num.matches(TELE_NUM);
+    }
 }
