@@ -1,8 +1,8 @@
 package furama_project_101.services.impl;
 
-import furama_project_101.commom.Check;
+import furama_project_101.commom.CheckPerson;
 import furama_project_101.model.human.Employee;
-import furama_project_101.services.IServicesEmployee;
+import furama_project_101.services.iservices_person.IServicesEmployee;
 import furama_project_101.ultil.ReadAndWriteOfEmployee;
 
 
@@ -15,11 +15,12 @@ import java.util.Scanner;
 
 public class IServicesEmployeeImpl implements IServicesEmployee {
     Scanner scanner = new Scanner(System.in);
+    private static final String pathFile1 = "src/furama_project_101/data/employee_data/file_source_employee.csv";
 
 
     @Override
     public void display() {
-        List<Employee> employeeList = ReadAndWriteOfEmployee.readFileEmployee("src/furama_project_101/data/employee_data/file_source_employee.csv");
+        List<Employee> employeeList = ReadAndWriteOfEmployee.readFileEmployee(pathFile1);
         for (Employee emp : employeeList) {
             System.out.println(emp);
         }
@@ -33,19 +34,27 @@ public class IServicesEmployeeImpl implements IServicesEmployee {
         do {
             System.out.println("Enter employee's name");
             name = scanner.nextLine();
-        } while (!Check.checkName(name));
-        boolean isOke;
+        } while (!CheckPerson.checkName(name));
+
+
+        boolean isOke;//false
         LocalDate dOfBirth = null;
         do {
-            isOke = true;
             try {
-                System.out.println("Please enter employee's birth");
+                System.out.println("Please enter customer's birth");
                 dOfBirth = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                if (dOfBirth.until(LocalDate.now()).getYears() < 18 || dOfBirth.until(LocalDate.now()).getYears() > 100) {
+                    System.out.println("Access denied!");
+                    isOke = true;
+                } else {
+                    System.out.println("Old enough");
+                    isOke = false;
+                }
             } catch (DateTimeParseException e) {
-                System.out.println("Please enter again!");
-                isOke = false;
+                System.out.println("Please enter again");
+                isOke = true;
             }
-        } while (!isOke);
+        } while (isOke);
 
 
         String gender;
@@ -76,25 +85,31 @@ public class IServicesEmployeeImpl implements IServicesEmployee {
         } while (flag);
 
         String idNumber;
+        boolean flag4 = true;
         do {
-            System.out.println("Please enter employee ID number");
+            System.out.println("Please enter ID");
             idNumber = scanner.nextLine();
-        } while (!Check.checkIdNumber(idNumber));
+            if (CheckPerson.checkIdNumber(idNumber) && CheckPerson.checkExistIdIEmployee(idNumber)) {// nếu không đúng dịnh dạng id và 2 id trùng nhau
+                break;
+            } else {
+               flag4 = true;
+            }
+        } while (flag4);
         String telephoneNumber;
         do {
             System.out.println("Please enter employee telephone number");
             telephoneNumber = scanner.nextLine();
-        } while (!Check.checkTelephone(telephoneNumber));
+        } while (!CheckPerson.checkTelephone(telephoneNumber));
         String email;
         do {
             System.out.println("Please enter employee email");
             email = scanner.nextLine();
-        } while (!Check.checkEmail(email));
+        } while (!CheckPerson.checkEmail(email));
         String employeeId;
         do {
             System.out.println("Please enter employee ID");
             employeeId = scanner.nextLine();
-        } while (!Check.checkEmpId(employeeId));
+        } while (!CheckPerson.checkEmpId(employeeId));
         String level;
         System.out.println("Please enter employee level");
         boolean flag1 = true;
@@ -133,7 +148,7 @@ public class IServicesEmployeeImpl implements IServicesEmployee {
             System.out.println
                     ("Menu Employee's status" + '\'' +
                             "\n1.Receptionist" + '\'' +
-                            "\n2.Service" + '\'' +
+                            "\n2.Attendant " + '\'' +
                             "\n3.Expert" + '\'' +
                             "\n4.Supervisor" + '\'' +
                             "\n5.Manager" + '\'' +
@@ -146,7 +161,7 @@ public class IServicesEmployeeImpl implements IServicesEmployee {
                     fStatus = false;
                     break;
                 case "2":
-                    status = "Service";
+                    status = "Attendant";
                     fStatus = false;
                     break;
                 case "3":
@@ -173,13 +188,13 @@ public class IServicesEmployeeImpl implements IServicesEmployee {
         String salary = scanner.nextLine();
         List<Employee> employeeList = new ArrayList<>();
         employeeList.add(new Employee(name, dOfBirth, gender, idNumber, telephoneNumber, email, employeeId, level, status, salary));
-        ReadAndWriteOfEmployee.writeFileEmployee(employeeList, "src/furama_project_101/data/employee_data/file_source_employee.csv", true);
+        ReadAndWriteOfEmployee.writeFileEmployee(employeeList, pathFile1, true);
     }
 
 
     @Override
     public void edit() {
-        List<Employee> employeeList = ReadAndWriteOfEmployee.readFileEmployee("src/furama_project_101/data/employee_data/file_source_employee.csv");
+        List<Employee> employeeList = ReadAndWriteOfEmployee.readFileEmployee(pathFile1);
         System.out.println("Enter ID ID number of employee need to fix");
         String idNumber = scanner.nextLine();
         for (int i = 0; i < employeeList.size(); i++) {
@@ -188,20 +203,26 @@ public class IServicesEmployeeImpl implements IServicesEmployee {
                 do {
                     System.out.println("Enter employee's name");
                     name = scanner.nextLine();
-                } while (!Check.checkName(name));
+                } while (!CheckPerson.checkName(name));
                 employeeList.get(i).setName(name);
-                boolean isOke;
+                boolean isOke;//false
                 LocalDate dOfBirth = null;
                 do {
-                    isOke = true;
                     try {
-                        System.out.println("Please enter employee's birth");
+                        System.out.println("Please enter customer's birth");
                         dOfBirth = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                        if (dOfBirth.until(LocalDate.now()).getYears() < 18 || dOfBirth.until(LocalDate.now()).getYears() > 100) {
+                            System.out.println("Access denied!");
+                            isOke = true;
+                        } else {
+                            System.out.println("Old enough");
+                            isOke = false;
+                        }
                     } catch (DateTimeParseException e) {
-                        System.out.println("Please enter again!");
-                        isOke = false;
+                        System.out.println("Please enter again");
+                        isOke = true;
                     }
-                } while (!isOke);
+                } while (isOke);
                 employeeList.get(i).setdOfB(dOfBirth);
 
 
@@ -233,28 +254,35 @@ public class IServicesEmployeeImpl implements IServicesEmployee {
                     }
                 } while (flag);
                 employeeList.get(i).setGender(gender);
+                boolean flag4;
                 do {
-                    System.out.println("Please enter employee ID number");
+                    System.out.println("Please enter ID");
                     idNumber = scanner.nextLine();
-                } while (!Check.checkIdNumber(idNumber));
+                    if (!CheckPerson.checkIdNumber(idNumber) && CheckPerson.checkExistIdIEmployee(idNumber)) {// nếu không đúng dịnh dạng id và 2 id trùng nhau
+                        System.out.println("ID is not right or already exist");
+                        flag4 = true;
+                    } else {
+                        flag4 = false;
+                    }
+                } while (flag4);
                 employeeList.get(i).setIdNumber(idNumber);
                 String telephoneNumber;
                 do {
                     System.out.println("Please enter employee telephone number");
                     telephoneNumber = scanner.nextLine();
-                } while (!Check.checkTelephone(telephoneNumber));
+                } while (!CheckPerson.checkTelephone(telephoneNumber));
                 employeeList.get(i).setTelephoneNumber(telephoneNumber);
                 String email;
                 do {
                     System.out.println("Please enter employee email");
                     email = scanner.nextLine();
-                } while (!Check.checkEmail(email));
+                } while (!CheckPerson.checkEmail(email));
                 employeeList.get(i).setEmail(email);
                 String employeeId;
                 do {
                     System.out.println("Please enter employee ID");
                     employeeId = scanner.nextLine();
-                } while (!Check.checkEmpId(employeeId));
+                } while (!CheckPerson.checkEmpId(employeeId));
                 employeeList.get(i).setEmployeeId(employeeId);
                 String level;
                 System.out.println("Please enter employee level");
@@ -295,7 +323,7 @@ public class IServicesEmployeeImpl implements IServicesEmployee {
                     System.out.println
                             ("Menu Employee's status" + '\'' +
                                     "\n1.Receptionist" + '\'' +
-                                    "\n2.Service" + '\'' +
+                                    "\n2.Attendant" + '\'' +
                                     "\n3.Expert" + '\'' +
                                     "\n4.Supervisor" + '\'' +
                                     "\n5.Manager" + '\'' +
@@ -308,7 +336,7 @@ public class IServicesEmployeeImpl implements IServicesEmployee {
                             fStatus = false;
                             break;
                         case "2":
-                            status = "Service";
+                            status = "Attendant";
                             fStatus = false;
                             break;
                         case "3":
@@ -332,13 +360,34 @@ public class IServicesEmployeeImpl implements IServicesEmployee {
                     }
                 } while (fStatus);
                 employeeList.get(i).setStatus(status);
-                System.out.println("Please enter employee's payment");
-                String salary = scanner.nextLine();
+                String salary = null;
+                try {
+                    System.out.println("Please enter employee's payment");
+                     salary = scanner.nextLine();
+
+                }catch (NumberFormatException e){
+                    System.out.println("Please enter again");
+                }
+
                 employeeList.get(i).setSalary(salary);
-                ReadAndWriteOfEmployee.writeFileEmployee(employeeList, "src/furama_project_101/data/employee_data/file_source_employee.csv", false);
+                ReadAndWriteOfEmployee.writeFileEmployee(employeeList, pathFile1, false);
             }
         }
     }
+
+    @Override
+    public void remove() {
+        List<Employee> employeeList = ReadAndWriteOfEmployee.readFileEmployee(pathFile1);
+        System.out.println("Enter ID ID number of employee need to remove");
+        String idNumber = scanner.nextLine();
+        for (Employee emp : employeeList) {
+            if (emp.getIdNumber().equals(idNumber)) {
+                employeeList.remove(emp);
+            }
+        }
+        ReadAndWriteOfEmployee.writeFileEmployee(employeeList, pathFile1, false);
+    }
+
 }
 
 

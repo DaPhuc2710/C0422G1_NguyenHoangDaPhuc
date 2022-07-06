@@ -16,7 +16,8 @@ public class EmployeeManagement {
             System.out.println("1.\tDisplay list employees");
             System.out.println("2.\tAdd new employee");
             System.out.println("3.\tEdit employee");
-            System.out.println("4\tReturn main menu");
+            System.out.println("4\tRemove employee");
+            System.out.println("5\tReturn main menu");
             System.out.println("Please enter your choice");
             num = scanner.nextLine();
             switch (num) {
@@ -27,11 +28,13 @@ public class EmployeeManagement {
                     break;
                 case "3":iServicesEmployee.edit();
                     break;
-                case "4":
+                case "4":iServicesEmployee.remove();
+                    break;
+                case "5":
                     break;
                 default:
                     System.out.println("Please enter again");
             }
-        } while (!num.equals("4"));
+        } while (!num.equals("5"));
     }
 }

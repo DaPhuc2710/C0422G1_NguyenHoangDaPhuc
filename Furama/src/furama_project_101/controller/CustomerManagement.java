@@ -16,7 +16,8 @@ public class CustomerManagement {
                     "1.\tDisplay list customers\n" +
                             "2.\tAdd new customer\n" +
                             "3.\tEdit customer\n" +
-                            "4.\tReturn main menu\n");
+                            "4.\tRemove customer\n" +
+                            "5.\tReturn main menu\n");
             System.out.println("Please enter your choice");
              num = scanner.nextLine();
             switch (num) {
@@ -26,12 +27,14 @@ public class CustomerManagement {
                     break;
                 case "3":iServicesCustomer.edit();
                     break;
-                case "4":
+                case "4":iServicesCustomer.remove();
+                    break;
+                case "5":
                     break;
                 default:
                     System.out.println("Please enter again");
             }
-        } while (!num.equals("4"));
+        } while (!num.equals("5"));
     }
 }
 

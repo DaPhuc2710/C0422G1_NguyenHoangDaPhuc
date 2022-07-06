@@ -1,9 +1,9 @@
 package furama_project_101.services.impl;
 
-import furama_project_101.commom.Check;
+import furama_project_101.commom.CheckPerson;
 import furama_project_101.ultil.ReadAndWriteOfCustomer;
 import furama_project_101.model.human.Customer;
-import furama_project_101.services.IServicesCustomer;
+import furama_project_101.services.iservices_person.IServicesCustomer;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,10 +14,11 @@ import java.util.Scanner;
 
 public class IServicesCustomerImpl implements IServicesCustomer {
     Scanner scanner = new Scanner(System.in);
+    private static final String pathFile = "src/furama_project_101/data/customer_data/file_source_customer.csv";
 
     @Override
     public void display() {
-        List<Customer> customerList = ReadAndWriteOfCustomer.readFileCustomer("src/furama_project_101/data/file_source_customer.csv");
+        List<Customer> customerList = ReadAndWriteOfCustomer.readFileCustomer(pathFile);
         for (Customer cus : customerList) {
             System.out.println(cus);
         }
@@ -30,20 +31,26 @@ public class IServicesCustomerImpl implements IServicesCustomer {
         do {
             System.out.println("Enter customer's name");
             name = scanner.nextLine();
-        } while (!Check.checkName(name));
+        } while (!CheckPerson.checkName(name));
 
-        boolean isOke;
+        boolean isOke;//false
         LocalDate dOfBirth = null;
         do {
-            isOke = true;
             try {
                 System.out.println("Please enter customer's birth");
                 dOfBirth = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                if (dOfBirth.until(LocalDate.now()).getYears() < 18 || dOfBirth.until(LocalDate.now()).getYears() > 100) {
+                    System.out.println("Access denied!");
+                    isOke = true;
+                } else {
+                    System.out.println("Old enough");
+                    isOke = false;
+                }
             } catch (DateTimeParseException e) {
                 System.out.println("Please enter again");
-                isOke = false;
+                isOke = true;
             }
-        } while (!isOke);
+        } while (isOke);
 
 
         String gender;
@@ -74,20 +81,22 @@ public class IServicesCustomerImpl implements IServicesCustomer {
         } while (flag);
 
         String idNumber;
-        while (true) {
-            System.out.println("Please enter ID number");
+        boolean flag4;
+        do {
+            System.out.println("Please enter ID");
             idNumber = scanner.nextLine();
-            if (Check.checkIdNumber(idNumber)) {
-                break;
+            if (!CheckPerson.checkIdNumber(idNumber) && CheckPerson.checkExistIdICustomer(idNumber)) {// nếu không đúng dịnh dạng id và 2 id trùng nhau
+                System.out.println("ID is not right or already exist");
+                flag4 = true;
             } else {
-                System.out.println("Please enter again!");
+                flag4 = false;
             }
-        }
+        } while (flag4);
         String telephoneNumber;
         while (true) {
             System.out.println("Please enter customer telephone number");
             telephoneNumber = scanner.nextLine();
-            if (Check.checkTelephone(telephoneNumber)) {
+            if (CheckPerson.checkTelephone(telephoneNumber)) {
                 break;
             } else {
                 System.out.println("Please enter again!");
@@ -97,7 +106,7 @@ public class IServicesCustomerImpl implements IServicesCustomer {
         while (true) {
             System.out.println("Please enter customer email");
             email = scanner.nextLine();
-            if (Check.checkEmail(email)) {
+            if (CheckPerson.checkEmail(email)) {
                 break;
             } else {
                 System.out.println("Please enter again!");
@@ -107,7 +116,7 @@ public class IServicesCustomerImpl implements IServicesCustomer {
         while (true) {
             System.out.println("Please enter customer ID");
             customerId = scanner.nextLine();
-            if (Check.checkCustomerId(customerId)) {
+            if (CheckPerson.checkCustomerId(customerId)) {
                 break;
             } else {
                 System.out.println("Please enter again!");
@@ -155,16 +164,16 @@ public class IServicesCustomerImpl implements IServicesCustomer {
         do {
             System.out.println("Please enter customer's address");
             address = scanner.nextLine();
-        } while (!Check.checkAddress(address));
+        } while (!CheckPerson.checkAddress(address));
         List<Customer> customerList = new LinkedList<>();
         customerList.add(new Customer(name, dOfBirth, gender, idNumber, telephoneNumber, email, customerId, typeOfCustomer, address));
-        ReadAndWriteOfCustomer.writeFileCustomer(customerList, "src/furama_project_101/data/file_source_customer.csv", true);
+        ReadAndWriteOfCustomer.writeFileCustomer(customerList, pathFile, true);
 
     }
 
     @Override
     public void edit() {
-        List<Customer> customerList = ReadAndWriteOfCustomer.readFileCustomer("src/furama_project_101/data/file_source_customer.csv");
+        List<Customer> customerList = ReadAndWriteOfCustomer.readFileCustomer(pathFile);
         System.out.println("Enter ID number of customer need to fix");
         String idNumber = scanner.nextLine();
         for (int i = 0; i < customerList.size(); i++) {
@@ -173,20 +182,26 @@ public class IServicesCustomerImpl implements IServicesCustomer {
                 do {
                     System.out.println("Enter customer's name");
                     name = scanner.nextLine();
-                } while (!Check.checkName(name));
+                } while (!CheckPerson.checkName(name));
                 customerList.get(i).setName(name);
-                boolean isOke;
+                boolean isOke;//false
                 LocalDate dOfBirth = null;
                 do {
-                    isOke = true;
                     try {
                         System.out.println("Please enter customer's birth");
                         dOfBirth = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                        if (dOfBirth.until(LocalDate.now()).getYears() < 18 || dOfBirth.until(LocalDate.now()).getYears() > 100) {
+                            System.out.println("Access denied!");
+                            isOke = true;
+                        } else {
+                            System.out.println("Old enough");
+                            isOke = false;
+                        }
                     } catch (DateTimeParseException e) {
                         System.out.println("Please enter again");
-                        isOke = false;
+                        isOke = true;
                     }
-                } while (!isOke);
+                } while (isOke);
                 customerList.get(i).setdOfB(dOfBirth);
 
 
@@ -218,29 +233,37 @@ public class IServicesCustomerImpl implements IServicesCustomer {
                     }
                 } while (flag);
                 customerList.get(i).setGender(gender);
+
+                boolean flag4;
                 do {
-                    System.out.println("Please enter ID number");
+                    System.out.println("Please enter ID");
                     idNumber = scanner.nextLine();
-                } while (!Check.checkIdNumber(idNumber));
+                    if (!CheckPerson.checkIdNumber(idNumber) && CheckPerson.checkExistIdICustomer(idNumber)) {// nếu không đúng dịnh dạng id và 2 id trùng nhau
+                        System.out.println("ID is not right or already exist");
+                        flag4 = true;
+                    } else {
+                        flag4 = false;
+                    }
+                } while (flag4);
                 customerList.get(i).setIdNumber(idNumber);
                 String telephoneNumber;
                 do {
                     System.out.println("Please enter customer telephone number");
                     telephoneNumber = scanner.nextLine();
-                } while (!Check.checkTelephone(telephoneNumber));
+                } while (!CheckPerson.checkTelephone(telephoneNumber));
                 customerList.get(i).setTelephoneNumber(telephoneNumber);
                 String email;
                 do {
                     System.out.println("Please enter customer email");
                     email = scanner.nextLine();
-                } while (!Check.checkEmail(email));
+                } while (!CheckPerson.checkEmail(email));
 
                 customerList.get(i).setEmail(email);
                 String customerId;
                 do {
                     System.out.println("Please enter customer ID");
                     customerId = scanner.nextLine();
-                } while (!Check.checkCustomerId(customerId));
+                } while (!CheckPerson.checkCustomerId(customerId));
                 customerList.get(i).setCustomerId(customerId);
 
                 String typeOfCustomer;
@@ -282,16 +305,30 @@ public class IServicesCustomerImpl implements IServicesCustomer {
                 } while (flag1);
                 customerList.get(i).setTypeOfCustomer(typeOfCustomer);
 
-
                 String address;
                 do {
                     System.out.println("Please enter customer's address");
                     address = scanner.nextLine();
-                } while (!Check.checkAddress(address));
+                } while (!CheckPerson.checkAddress(address));
                 customerList.get(i).setAddress(address);
-                ReadAndWriteOfCustomer.writeFileCustomer(customerList, "src/furama_project_101/data/file_source_customer.csv", false);
+                ReadAndWriteOfCustomer.writeFileCustomer(customerList, pathFile, false);
 
             }
         }
+    }
+
+    @Override
+    public void remove() {
+        List<Customer> customerList = ReadAndWriteOfCustomer.readFileCustomer(pathFile);
+        System.out.println("Enter ID number of customer need to remove");
+        String idNumber = scanner.nextLine();
+        for (Customer s : customerList) {
+            if (s.getIdNumber().equals(idNumber)) {
+                customerList.remove(s);
+            }
+        }
+        ReadAndWriteOfCustomer.writeFileCustomer(customerList, pathFile, false);
+
+
     }
 }

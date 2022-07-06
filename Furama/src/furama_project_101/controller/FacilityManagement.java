@@ -1,10 +1,13 @@
 package furama_project_101.controller;
 
+import furama_project_101.services.impl.ServicesFacilityImpl;
+
 import java.util.Scanner;
 
 public class FacilityManagement {
     public static void displayFacilityManagement() {
         Scanner scanner = new Scanner(System.in);
+        ServicesFacilityImpl servicesFacility= new ServicesFacilityImpl();
         String num;
         do {
             System.out.println("______Facility Management______");
@@ -16,11 +19,11 @@ public class FacilityManagement {
             System.out.println("Please enter your choice");
             num = scanner.nextLine();
             switch (num) {
-                case "1":
+                case "1":servicesFacility.display();
                     break;
-                case "2":
+                case "2":servicesFacility.add();
                     break;
-                case "3":
+                case "3":servicesFacility.displayListMaintenance();
                     break;
                 case "4":
                     break;
